@@ -16,7 +16,7 @@ class AuthProvider extends ChangeNotifier{
   AuthStatus authStatus = AuthStatus.checking;
   
   AuthProvider(){
-    this.isAuthenticated();
+    isAuthenticated();
   }
   
   
@@ -24,7 +24,7 @@ class AuthProvider extends ChangeNotifier{
     //TODO: Peticion HTTP
     _token = 'adjkfhadadfjkasdfkjklhakljsdf';
     LocalStorage.prefs.setString('token', _token!);
-    print('Almacenar JWT: $_token');
+    // print('Almacenar JWT: $_token');
     
     authStatus = AuthStatus.authenticated;
     notifyListeners();

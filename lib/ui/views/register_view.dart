@@ -22,11 +22,11 @@ class RegisterView extends StatelessWidget {
           final registerFormProvider = Provider.of<RegisterFormProvider>(context, listen: false);
           
           return Container(
-          margin: EdgeInsets.only(top: 50),
-          padding: EdgeInsets.symmetric( horizontal: 20),
+          margin: const EdgeInsets.only(top: 50),
+          padding: const EdgeInsets.symmetric( horizontal: 20),
           child: Center(
             child: ConstrainedBox(
-              constraints: BoxConstraints( maxWidth: 370),
+              constraints: const BoxConstraints( maxWidth: 370),
               child: Form(
                 key: registerFormProvider.formKey,
                 autovalidateMode: AutovalidateMode.always,
@@ -38,14 +38,14 @@ class RegisterView extends StatelessWidget {
                         return null; //Valido
                       },
                       onChanged: (value) => registerFormProvider.name = value,
-                      style: TextStyle( color: Colors.white ),
+                      style: const TextStyle( color: Colors.white ),
                       decoration: CustomInputs.loginInputDecoration(
                         hint: 'Ingrese su nombre',
                         label: 'Nombre',
                         icon: Icons.supervised_user_circle_sharp
                       ),
                     ),
-                    SizedBox( height: 20 ),
+                    const SizedBox( height: 20 ),
                     TextFormField(
                       validator: (value){
                         if( !EmailValidator.validate(value ?? '') ) return 'Email no válido';
@@ -53,14 +53,14 @@ class RegisterView extends StatelessWidget {
                         return null;
                       },
                       onChanged: (value) => registerFormProvider.email = value,
-                      style: TextStyle( color: Colors.white ),
+                      style: const TextStyle( color: Colors.white ),
                       decoration: CustomInputs.loginInputDecoration(
                         hint: 'Ingrese su correo',
                         label: 'Correo',
                         icon: Icons.email_outlined
                       ),
                     ),
-                    SizedBox( height: 20 ),
+                    const SizedBox( height: 20 ),
                     TextFormField(
                       validator: (value){
                         
@@ -71,14 +71,14 @@ class RegisterView extends StatelessWidget {
                         return null; //Valido
                       },                      
                       onChanged: (value) => registerFormProvider.password = value,
-                      style: TextStyle( color: Colors.white ),
+                      style: const TextStyle( color: Colors.white ),
                       decoration: CustomInputs.loginInputDecoration(
                         hint: '**************',
                         label: 'Contraseña',
                         icon: Icons.lock_outline
                       ),
                     ),
-                    SizedBox( height: 20 ),
+                    const SizedBox( height: 20 ),
                     
                     CustomOutlinedButton(
                       onPressed: (){
@@ -86,7 +86,7 @@ class RegisterView extends StatelessWidget {
                       }, 
                       text: 'Crear cuenta'
                     ),
-                    SizedBox( height: 20 ),
+                    const SizedBox( height: 20 ),
                     
                     LinkText(
                       text: 'Ir al login',

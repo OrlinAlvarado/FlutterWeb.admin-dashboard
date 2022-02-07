@@ -2,7 +2,6 @@ import 'package:admin_dashboard/ui/layouts/auth/widgets/background_twitter.dart'
 import 'package:admin_dashboard/ui/layouts/auth/widgets/custom_title.dart';
 import 'package:admin_dashboard/ui/layouts/auth/widgets/links_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class AuthLayout extends StatelessWidget {
   final Widget child;
@@ -16,14 +15,14 @@ class AuthLayout extends StatelessWidget {
         
         // isAlwaysShown: true,
         child: ListView(
-          physics: ClampingScrollPhysics(),
+          physics: const ClampingScrollPhysics(),
           children: [
             
             (size.width > 1000)
               ? _DesktopBody(child: child)
               : _MobileBody( child: child),
             //Links bar
-            LinksBar()
+            const LinksBar()
           ],
         ),
       )
@@ -42,14 +41,14 @@ class _MobileBody extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          SizedBox( height: 20),
-          CustomTitle(),
-          Container(
+          const SizedBox( height: 20),
+          const CustomTitle(),
+          SizedBox(
             width: double.infinity,
             height: 420,
             child: child,
           ),
-          Container(
+          const SizedBox(
             child: BackgroundTwitter(),
             width: double.infinity,
             height: 400,
@@ -82,8 +81,8 @@ class _DesktopBody extends StatelessWidget {
             color: Colors.black,
             child: Column(
               children: [
-                CustomTitle(),
-                SizedBox(height: 50),
+                const CustomTitle(),
+                const SizedBox(height: 50),
                 Expanded(child: child)
               ],
             ),

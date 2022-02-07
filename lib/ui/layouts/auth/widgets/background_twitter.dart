@@ -23,7 +23,7 @@ class BackgroundTwitter extends StatelessWidget {
   }
 
   BoxDecoration buildBoxDecoration() {
-    return BoxDecoration(
+    return const BoxDecoration(
         image: DecorationImage(
           image: AssetImage('twitter-bg.png'),
           fit: BoxFit.cover
