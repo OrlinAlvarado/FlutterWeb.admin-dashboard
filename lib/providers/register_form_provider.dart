@@ -7,12 +7,14 @@ class RegisterFormProvider extends ChangeNotifier{
   String password = '';
   String name = '';
   
-  validateForm(){
+  bool validateForm(){
     if(formKey.currentState!.validate())
     {
       // print('Form valid... Login');
+      return true;
     } else {
       // print('Form no valid');
+      return false;
     }
   }
 }

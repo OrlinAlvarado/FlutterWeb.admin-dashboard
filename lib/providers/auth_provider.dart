@@ -1,8 +1,12 @@
+import 'package:admin_dashboard/models/http/auth_response.dart';
+import 'package:admin_dashboard/services/notifications_service.dart';
+import 'package:flutter/material.dart';
+
+import 'package:admin_dashboard/api/CafeApi.dart';
 
 import 'package:admin_dashboard/router/router.dart';
 import 'package:admin_dashboard/services/local_storage.dart';
 import 'package:admin_dashboard/services/navigation_service.dart';
-import 'package:flutter/cupertino.dart';
 
 enum AuthStatus {
   checking,
@@ -14,6 +18,7 @@ class AuthProvider extends ChangeNotifier{
   
   String? _token;
   AuthStatus authStatus = AuthStatus.checking;
+  Usuario? user;
   
   AuthProvider(){
     isAuthenticated();
@@ -21,14 +26,53 @@ class AuthProvider extends ChangeNotifier{
   
   
   login(String email, String password){
-    //TODO: Peticion HTTP
-    _token = 'adjkfhadadfjkasdfkjklhakljsdf';
-    LocalStorage.prefs.setString('token', _token!);
-    // print('Almacenar JWT: $_token');
+    final data = {
+      'correo': email,
+      'password': password,
+    };
+    
+    
+    CafeApi.post('/auth/login', data)
+    .then(validateLogin)
+    .catchError((e) {
+      print('error en: $e');
+      NotificationsService.showSnackbarError('Credenciales no válidas');
+    });
+  }
+  
+  register(String email, String password, String name){
+    
+    final data = {
+      'nombre': name,
+      'correo': email,
+      'password': password,
+    };
+    
+    
+    CafeApi.post('/usuarios', data)
+      .then(validateLogin)
+      .catchError((e) {
+        print('error en: $e');
+        NotificationsService.showSnackbarError('Credenciales no válidas');
+      });
+    
+  }
+  
+  validateLogin( dynamic json){
+    final authResponse = AuthResponse.fromMap(json);
+    user = authResponse.usuario;
     
     authStatus = AuthStatus.authenticated;
-    notifyListeners();
+    LocalStorage.prefs.setString('token', authResponse.token);
     NavigationService.replaceTo(Fluroruter.dashboardRoute);
+    CafeApi.configureDio();
+    notifyListeners();
+  }
+  
+  logout(){
+    LocalStorage.prefs.remove('token');
+    authStatus = AuthStatus.notAuthenticated;
+    notifyListeners();
   }
   
   Future<bool> isAuthenticated() async{
@@ -39,11 +83,16 @@ class AuthProvider extends ChangeNotifier{
       return false;
     }
     
-    //TODO: Ir al backend y comprbar si el JWT es valido
-    
-    await Future.delayed(const Duration(milliseconds: 1000));
-    authStatus = AuthStatus.authenticated;
-    notifyListeners();
-    return true;
+    try {
+      final json = await CafeApi.httpGet('/auth');
+      validateLogin(json);
+      return true;
+      
+    } catch (e) {
+      print(e);
+      authStatus = AuthStatus.notAuthenticated;
+      notifyListeners();
+      return false;
+    }
   }
 }

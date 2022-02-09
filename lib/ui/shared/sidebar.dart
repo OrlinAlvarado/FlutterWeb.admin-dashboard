@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import 'package:admin_dashboard/router/router.dart';
 import 'package:admin_dashboard/providers/sidemenu_provider.dart';
+import 'package:admin_dashboard/providers/auth_provider.dart';
 import 'package:admin_dashboard/services/navigation_service.dart';
 
 import 'package:admin_dashboard/ui/shared/widgets/menu_item.dart';
@@ -68,9 +69,13 @@ class Sidebar extends StatelessWidget {
           const SizedBox( height: 50 ),
           
           const TextSeparator( text: 'Exit' ),
-          MenuItem( text: 'Logout', icon: Icons.exit_to_app_outlined, onPressed: () => {} ),
-          
-          
+          MenuItem( 
+            text: 'Logout', 
+            icon: Icons.exit_to_app_outlined, 
+            onPressed: () {
+              Provider.of<AuthProvider>(context, listen: false)
+                .logout();
+            }),
         ],
       ),
     );
