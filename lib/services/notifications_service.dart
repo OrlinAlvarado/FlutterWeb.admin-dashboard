@@ -11,4 +11,11 @@ class NotificationsService {
     
     messengerKey.currentState!.showSnackBar(snackBar);
   }
+  static showSnackbar( String message){
+    final snackBar = SnackBar(
+      content: Text(message, style: TextStyle(color: Colors.white),),
+    );
+    
+    messengerKey.currentState!.showSnackBar(snackBar);
+  }
 }

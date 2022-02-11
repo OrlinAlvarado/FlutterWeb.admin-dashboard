@@ -58,13 +58,15 @@ class AuthProvider extends ChangeNotifier{
     
   }
   
-  validateLogin( dynamic json){
+  validateLogin( dynamic json, { bool redirect = true }){
     final authResponse = AuthResponse.fromMap(json);
     user = authResponse.usuario;
     
     authStatus = AuthStatus.authenticated;
     LocalStorage.prefs.setString('token', authResponse.token);
-    NavigationService.replaceTo(Fluroruter.dashboardRoute);
+    if(redirect){
+      NavigationService.replaceTo(Fluroruter.dashboardRoute);
+    }
     CafeApi.configureDio();
     notifyListeners();
   }
@@ -85,7 +87,7 @@ class AuthProvider extends ChangeNotifier{
     
     try {
       final json = await CafeApi.httpGet('/auth');
-      validateLogin(json);
+      validateLogin(json, redirect: false);
       return true;
       
     } catch (e) {

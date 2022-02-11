@@ -17,7 +17,10 @@ class CustomInputs {
       ),
       hintText: hint,
       labelText: label,
-      prefixIcon: Icon( icon, color: Colors.grey )
+      prefixIcon: Icon( icon, color: Colors.grey ),
+      labelStyle: TextStyle( color: Colors.grey ),
+      hintStyle: TextStyle( color: Colors.grey ),
+
       
     );
   }
