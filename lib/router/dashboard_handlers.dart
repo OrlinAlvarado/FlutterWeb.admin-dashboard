@@ -1,6 +1,8 @@
-import 'package:admin_dashboard/router/router.dart';
+import 'package:admin_dashboard/ui/views/user_view.dart';
 import 'package:fluro/fluro.dart';
 import 'package:provider/provider.dart';
+
+import 'package:admin_dashboard/router/router.dart';
 
 import 'package:admin_dashboard/providers/auth_provider.dart';
 import 'package:admin_dashboard/providers/sidemenu_provider.dart';
@@ -10,6 +12,7 @@ import 'package:admin_dashboard/ui/views/icons_view.dart';
 import 'package:admin_dashboard/ui/views/login_view.dart';
 import 'package:admin_dashboard/ui/views/blank_view.dart';
 import 'package:admin_dashboard/ui/views/categories_view.dart';
+import 'package:admin_dashboard/ui/views/users_view.dart';
 
 class DashboardHandlers {
   static Handler dashboard = Handler(
@@ -70,6 +73,39 @@ class DashboardHandlers {
         return const CategoriesView();
       }
       
+    } 
+  );
+  static Handler users = Handler(
+    handlerFunc:  (context, params ) {
+      
+      final authprovider = Provider.of<AuthProvider>(context!);
+      Provider.of<SideMenuProvider>(context, listen: false)
+        .setCurrentPage(Fluroruter.usersRoute);
+      
+      if(authprovider.authStatus == AuthStatus.notAuthenticated){
+        return const LoginView();
+      } else {
+        return const UsersView();
+      }
+      
+    } 
+  );
+  static Handler user = Handler(
+    handlerFunc:  (context, params ) {
+      
+      final authprovider = Provider.of<AuthProvider>(context!);
+      Provider.of<SideMenuProvider>(context, listen: false)
+        .setCurrentPage(Fluroruter.userRoute);
+      
+      if(authprovider.authStatus == AuthStatus.notAuthenticated){
+        return const LoginView();
+      } else {
+        if( params['uid']?.first != null){
+          return UserView( uid: params['uid']!.first );  
+        } else {
+          return const UsersView();
+        }
+      }
     } 
   );
 }

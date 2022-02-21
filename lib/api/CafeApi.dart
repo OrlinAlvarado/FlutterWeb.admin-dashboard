@@ -22,8 +22,8 @@ class CafeApi {
       
       return response.data;
       
-    } catch (e) {
-      print(e);
+    } on DioError catch (e) {
+      print(e.response);
       throw('Error en el GET');
     }
   }
@@ -34,7 +34,7 @@ class CafeApi {
       
       return response.data;
       
-    } catch (e) {
+    } on DioError catch (e) {
       print(e);
       throw('Error en el POST');
     }
@@ -46,9 +46,9 @@ class CafeApi {
       
       return response.data;
       
-    } catch (e) {
+    } on DioError catch (e) {
       print(e);
-      throw('Error en el POST');
+      throw('Error en el POST,$e');
     }
   }
   static Future delete(String path, Map<String, dynamic> data) async {
@@ -58,7 +58,7 @@ class CafeApi {
       
       return true;
       
-    } catch (e) {
+    } on DioError catch (e) {
       print(e);
       throw('Error en el POST');
     }
