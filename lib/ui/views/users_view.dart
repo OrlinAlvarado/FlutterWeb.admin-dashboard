@@ -25,17 +25,17 @@ class UsersView extends StatelessWidget {
             sortAscending: usersProvider.ascending,
             sortColumnIndex: usersProvider.sortColumnIndex,
             columns: [
-              DataColumn(label: Text('Avatar')),
-              DataColumn(label: Text('Nombre'), onSort: (colIndex, _){
+              const DataColumn(label: Text('Avatar')),
+              DataColumn(label: const Text('Nombre'), onSort: (colIndex, _){
                 usersProvider.sortColumnIndex = colIndex;
                 usersProvider.sort<String>((user) => user.nombre);
               }),
-              DataColumn(label: Text('Email'), onSort: (colIndex, _){
+              DataColumn(label: const Text('Email'), onSort: (colIndex, _){
                 usersProvider.sortColumnIndex = colIndex;
                 usersProvider.sort<String>((user) => user.correo);
               }),
-              DataColumn(label: Text('UID')),
-              DataColumn(label: Text('Acciones')),
+              const DataColumn(label: Text('UID')),
+              const DataColumn(label: Text('Acciones')),
             ], 
             onPageChanged: (page) {
               print(page);

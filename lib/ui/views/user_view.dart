@@ -1,14 +1,16 @@
-import 'package:admin_dashboard/services/navigation_service.dart';
-import 'package:admin_dashboard/services/notifications_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:file_picker/file_picker.dart';
 
-import 'package:admin_dashboard/providers/user_form_provider.dart';
-import 'package:admin_dashboard/providers/users_provider.dart';
+import 'package:admin_dashboard/services/navigation_service.dart';
+import 'package:admin_dashboard/services/notifications_service.dart';
+
+import 'package:admin_dashboard/providers/providers.dart';
 
 import 'package:admin_dashboard/ui/inputs/custom_inputs.dart';
 import 'package:admin_dashboard/ui/cards/white_card.dart';
 import 'package:admin_dashboard/ui/labels/custom_labels.dart';
+
 import 'package:email_validator/email_validator.dart';
 
 import 'package:admin_dashboard/models/usuario.dart';
@@ -64,8 +66,8 @@ class _UserViewState extends State<UserView> {
           const SizedBox( height: 10 ),
           
             if(user == null)
-                WhiteCard(
-                child: Container(
+                const WhiteCard(
+                child: SizedBox(
                   height: 400,
                   child: Center(
                     child: CircularProgressIndicator(),
@@ -73,7 +75,7 @@ class _UserViewState extends State<UserView> {
                 )
               ) else
               
-            _UserViewBody()
+            const _UserViewBody()
         ],
       ),
     );
@@ -89,16 +91,14 @@ class _UserViewBody extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       child: Table(
-        columnWidths: {
+        columnWidths: const {
           0: FixedColumnWidth(250),
         },
         
         children: [
           TableRow(
             children: [
-              //TODO: Avatar
               _AvatarContainer(),
-              //TODO: Formulario de actualizacion
               _UserViewForm()
             ]
           )
@@ -140,7 +140,7 @@ class _UserViewForm extends StatelessWidget {
               },
             ),
             
-            SizedBox( height: 20 ),
+            const SizedBox( height: 20 ),
             
             TextFormField(
               initialValue: user.correo,
@@ -157,10 +157,10 @@ class _UserViewForm extends StatelessWidget {
                     },
             ),
             
-            SizedBox( height: 20 ),
+            const SizedBox( height: 20 ),
             
             ConstrainedBox(
-              constraints: BoxConstraints( maxWidth: 110 ),
+              constraints: const BoxConstraints( maxWidth: 110 ),
               child: ElevatedButton(
                 onPressed: () async{
                   final saved = await userFormProvider.updateUser();
@@ -176,7 +176,7 @@ class _UserViewForm extends StatelessWidget {
                   shadowColor: MaterialStateProperty.all( Colors.transparent )
                 ),
                 child: Row(
-                  children: [
+                  children: const [
                     Icon( Icons.save_outlined, size: 20 ),
                     Text(' Guardar')
                   ],
@@ -196,27 +196,29 @@ class _AvatarContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     final userFormProvider = Provider.of<UserFormProvider>(context);
     final user = userFormProvider.user!;
-    
+    final image = ( user.img == null )
+      ? const Image(image: AssetImage('no-image.jpg'))
+      : FadeInImage.assetNetwork(placeholder: 'loader.gif', image: user.img!);
+      
+      
     return WhiteCard(
       width: 250,
-      child: Container(
+      child: SizedBox(
         width: double.infinity,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text('Profile', style: CustomLabels.h2 ),
-            SizedBox( height: 20 ),
-            Container(
+            const SizedBox( height: 20 ),
+            SizedBox(
               width: 150,
               height: 160,
               child: Stack(
                 
                 children: [
                   ClipOval(
-                    child: Image(
-                      image: AssetImage('no-image.jpg'),
-                    ),
+                    child: image,
                   ),
                   Positioned(
                     bottom: 5,
@@ -231,9 +233,24 @@ class _AvatarContainer extends StatelessWidget {
                       child: FloatingActionButton(
                         backgroundColor: Colors.indigo,
                         elevation: 0,
-                        child: Icon( Icons.camera_alt_outlined, size: 20,),
-                        onPressed: (){
-                          //TODO: Seleccionar la imagen
+                        child: const Icon( Icons.camera_alt_outlined, size: 20,),
+                        onPressed: () async{
+                          FilePickerResult? result = await FilePicker.platform.pickFiles(
+                            type: FileType.custom,
+                            allowMultiple: false,
+                            allowedExtensions: ['jpg','jpeg','png']
+                          );
+
+                          if (result != null) {
+                            // PlatformFile file = result.files.first;
+                            NotificationsService.showBusyIndicator(context);
+                            final resp = await userFormProvider.uploadImage('/uploads/usuarios/${ user.uid }', result.files.first.bytes!);
+                            Provider.of<UsersProvider>(context, listen: false).refreshUser(resp);
+                            Navigator.of(context).pop();
+                            
+                          } else {
+                            // User canceled the picker
+                          }
                         },
                       ),
                     ),
@@ -241,11 +258,11 @@ class _AvatarContainer extends StatelessWidget {
                 ],
               ),
             ),
-            SizedBox( height: 20,),
+            const SizedBox( height: 20,),
             
             Text(
               user.nombre,
-              style: TextStyle( fontWeight: FontWeight.bold)
+              style: const TextStyle( fontWeight: FontWeight.bold)
             )
           ],
         ),

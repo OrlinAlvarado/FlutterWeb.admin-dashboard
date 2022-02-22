@@ -18,8 +18,8 @@ class CustomInputs {
       hintText: hint,
       labelText: label,
       prefixIcon: Icon( icon, color: Colors.grey ),
-      labelStyle: TextStyle( color: Colors.grey ),
-      hintStyle: TextStyle( color: Colors.grey ),
+      labelStyle: const TextStyle( color: Colors.grey ),
+      hintStyle: const TextStyle( color: Colors.grey ),
 
       
     );
@@ -42,8 +42,8 @@ class CustomInputs {
       hintText: hint,
       labelText: label,
       prefixIcon: Icon( icon, color: Colors.grey ),
-      labelStyle: TextStyle( color: Colors.grey ),
-      hintStyle: TextStyle( color: Colors.grey ),
+      labelStyle: const TextStyle( color: Colors.grey ),
+      hintStyle: const TextStyle( color: Colors.grey ),
 
       
     );

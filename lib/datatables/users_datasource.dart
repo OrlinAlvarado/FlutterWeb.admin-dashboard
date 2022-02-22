@@ -13,7 +13,11 @@ class UsersDTS extends DataTableSource{
   DataRow getRow(int index) {
     final usuario = usuarios[index];
     
-    final image = Image( image: AssetImage('no-image.jpg'), width: 35, height: 35);
+    final image = usuario.img == null
+      ? const Image( image: AssetImage('no-image.jpg'), width: 35, height: 35)
+      : FadeInImage.assetNetwork(placeholder: 'loader.gif', image: usuario.img!, width: 35, height: 35 );
+    
+    
     return DataRow.byIndex(
       index: index,
       cells: [

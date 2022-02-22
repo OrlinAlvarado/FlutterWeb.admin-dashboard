@@ -32,7 +32,6 @@ class _DashboardLayoutState extends State<DashboardLayout> with SingleTickerProv
         children: [
           Row(
             children: [
-              //TODO: Esto depende si es mas de 700px
               if( size.width > 700)
                 const Sidebar(),
               
@@ -59,8 +58,6 @@ class _DashboardLayoutState extends State<DashboardLayout> with SingleTickerProv
                 builder: (context, _) => Stack(
                   children: [
                     
-                    
-                    //TODO: Background
                     if(SideMenuProvider.isOpen)
                       Opacity(
                         opacity: SideMenuProvider.opacity.value,
